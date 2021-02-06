@@ -30,3 +30,14 @@ body {
     background: rgba(0,0,0,0.4);
     text-shadow: 0 0 .5rem black;
 }
+.controlContainer kbd{
+    font-size: 4rem;
+}
+.controlContainer p {
+    color:yellow;
+}
+.playing{
+    border:1px solid yellow;
+    color:yellow;
+    transform: scale(1.1);
+}
