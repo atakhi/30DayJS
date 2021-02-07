@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Variables</title>
+</head>
+<style>
+    :root{
+        --base: yellow;
+        --spacing:0px;
+        --blur:0px;
+    }
+    body{
+        text-align: center;
+        background: blueviolet;
+        color:white;
+    }
+    .h1Title{
+        color:var(--base);
+    }
+    img{
+        padding: var(--spacing);
+        filter:blur(var(--blur));
+        background: var(--base);
+    }
+</style>
+<body>
+    <h1>Update CSS Variables with</h1> <span class="h1Title"> JS</span>
+    <div class="controls">
+        <div class="Spacing">
+            <span>Spacing</span>
+            <input type="range" name="spacing" id="spacing" value="0">
+        </div>
+        <div class="Blur">
+            <span>Blur</span>
+            <input type="range" name="blur" id="blur" value="0">
+        </div>
+        <div class="Color">
+            <span>Color</span>
+            <input type="color" name="color" id="color">
+        </div>
+        <img src="https://source.unsplash.com/7bwQXzbF6KE/800x500">
+        
+    </div>
+</body>
+<script>
+    const root = document.querySelector(':root');
+
+    const spacingEl = document.querySelector('#spacing');
+    const blurEl = document.querySelector('#blur');
+    const colorEl = document.querySelector('#color');
+
+
+    spacingEl.addEventListener('change',event=>{
+        console.log(event.target.value);
+        root.style.setProperty('--spacing',event.target.value + 'px');
+    });
+    blurEl.addEventListener('change',event=>{
+        console.log(event.target.value);
+        root.style.setProperty('--blur',event.target.value + 'px');
+    });
+    colorEl.addEventListener('change',event=>{
+        console.log(event.target.value);
+        root.style.setProperty('--base',event.target.value);
+    });
+</script>
+</html>
