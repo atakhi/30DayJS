@@ -15,7 +15,7 @@
 
     .container {
         background-color: yellow;
-        height: 100vh;
+        min-height: 100vh;
         display: flex;
         justify-content: center;
         align-items: flex-start;
@@ -37,9 +37,6 @@
         list-style: none;
         margin: 0;
         padding: 0;
-        overflow: hidden;
-        max-height: 300px;
-        overflow-y: auto;
     }
 
     ul li {
@@ -97,8 +94,8 @@
 
         suggestionContainer.innerHTML = '';
 
-        typeaheadResults = data.filter(d => d.city.toLowerCase() == e.target.value.toLowerCase()
-            || d.state.toLowerCase() == e.target.value.toLowerCase());
+        typeaheadResults = data.filter(d => d.city.toLowerCase().indexOf(e.target.value.toLowerCase()) > -1
+            || d.state.toLowerCase().indexOf(e.target.value.toLowerCase()) > -1);
         console.log(typeaheadResults);
         
         typeaheadResults.forEach(res => {
