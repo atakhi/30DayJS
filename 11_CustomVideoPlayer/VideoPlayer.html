@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Player</title>
+</head>
+<style>
+    body{
+        margin: 0;
+        padding: 0;
+    }
+    .container{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+    .player{
+        position: relative;
+        display: flex;
+    }
+     .hidden{
+        display: none;
+    } 
+    .controls{
+        transition: all 0.5s;
+        transform: translateY(100%) translateY(-5px);
+        background: rgba(0,0,0,0.1);
+        position: absolute;
+        bottom: 3rem;
+        width: 100%;
+    }
+    .progress{
+        background-color: black;
+        height: 1rem;
+    }
+    .progress-filled{
+        background-color: yellow;
+        height: 1rem;
+        width: 0.1rem;
+    }
+</style>
+<body>
+    <div class="container">
+        <div class="player">
+            <video>
+                <source src="652333414.mp4">
+                    Sorry your browser does not support embedded videos.
+            </video>
+            <div class="controls">
+                <div class="progress">
+                    <div class="progress-filled"></div>
+                </div>
+                <input type="button" value="Play" class="play">
+                <input type="range" name="volume" class="volume" min="0" max="1" step="0.1" value="0.6">
+                <input type="range" name="speed" class="speed" min="1" max="10" value="1" step="1">
+                <input type="button" value="<<30s" class="skipback" data-time="30">
+                <input type="button" value=">>30s" class="skipforward" data-time="30">
+            </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+const playEl = document.querySelector('.play');
+const videoEl = document.querySelector('video');
+const volumeEl = document.querySelector('.volume');
+const speedEl = document.querySelector('.speed');
+const skipForwardEl = document.querySelector('.skipforward');
+const skipBackEl = document.querySelector('.skipback');
+const controls = document.querySelector('.controls');
+const progressFillEl = document.querySelector('.progress-filled');
+const progressBar = document.querySelector('.progress');
+controls.classList.add('hidden');
+
+function playHandler(e){
+    videoEl.paused ? videoEl.play() : videoEl.pause();
+    videoEl.paused ? playEl.value = 'Play' : playEl.value = 'Pause';
+}
+playEl.addEventListener('click',playHandler);
+function volumeChange(e){
+    videoEl.volume = this.value;
+}
+volumeEl.addEventListener('change',volumeChange);
+function speedChage(e){
+    videoEl.playbackRate = this.value;
+}
+speedEl.addEventListener('change',speedChage);
+function skipForward(e){
+    videoEl.currentTime += parseFloat(this.dataset.time);
+}
+function skipBack(e){
+    videoEl.currentTime -= parseFloat(this.dataset.time);
+}
+skipForwardEl.addEventListener('click',skipForward);
+skipBackEl.addEventListener('click',skipBack);
+controls.addEventListener('mouseover',()=>{
+if(controls.classList.contains('hidden'))
+        controls.classList.toggle('hidden');
+})
+controls.addEventListener('mouseleave',()=>{
+    controls.classList.toggle('hidden');
+})
+videoEl.addEventListener('mouseover',()=>{
+    if(controls.classList.contains('hidden'))
+        controls.classList.toggle('hidden');
+})
+videoEl.addEventListener('mouseleave',()=>{
+    controls.classList.toggle('hidden');
+});
+videoEl.addEventListener('click',playHandler);
+videoEl.addEventListener('timeupdate',(e)=>{
+    const percent = (videoEl.currentTime / videoEl.duration) * 100;
+    progressFillEl.style.width = percent + '%';
+})
+progressBar.addEventListener('click',(e)=>{
+    const scrubTime = (e.offsetX / progressBar.offsetWidth) * videoEl.duration;
+    videoEl.currentTime = scrubTime;
+})
+</script>
+</html>
