@@ -39,6 +39,10 @@
     <div class="container">
         <div class="items">
             <div class="item">
+                <input type="checkbox" class="checkbox" data-i="0">
+                <span>Lorem ipsum dolor sit amet consectetur adipisicing elit.</span>
+            </div>
+            <div class="item">
                 <input type="checkbox" class="checkbox" data-i="1">
                 <span>Lorem ipsum dolor sit amet consectetur adipisicing elit.</span>
             </div>
@@ -67,19 +71,22 @@
     </div>
 </body>
 <script>
-    let last;
+    let last=0;;
     function checkedHandler(e){
-        let inbetween = false;
+        let curr = this.dataset.i;
+        if(curr > last){
+            const temp = curr;
+            curr = last;
+            last = temp;
+        }
         if(e.shiftKey && this.checked){
             checkboxes.forEach((ch)=>{
-                if(this == ch || ch == last){
-                    inbetween = !inbetween;
-                }
-                if(inbetween)
+                if(curr <= ch.dataset.id || last >= ch.dataset.i){
                     ch.checked= true;
+                }
             });
         }
-        last = this;
+        last = this.dataset.i;
     }
 
     const checkboxes = document.querySelectorAll('.checkbox');
