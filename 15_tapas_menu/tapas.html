@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tapas</title>
+</head>
+<style>
+    html,
+    body {
+        padding: 0;
+        margin: 0;
+        background-color: skyblue;
+    }
+
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        flex-direction: column;
+    }
+
+    .tapasBox {
+        background-color: white;
+        box-shadow: 1px 1px 2px transparent, 0 0 25px transparent, 0 0 5px transparent;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        padding: 2rem;
+    }
+
+    ul {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+    }
+
+    li {
+        list-style: none;
+        margin: 0;
+        padding: 1rem;
+        border-bottom: 1px solid silver;
+    }
+
+    form {
+        padding: 1rem;
+    }
+
+    input[type="text"] {
+        border-radius: 5px;
+        padding: 0.5 rem;
+    }
+
+    input[type="submit"] {
+        background: transparent;
+    }
+</style>
+
+<body>
+    <div class="container">
+        <div class="tapasBox">
+            <h1>LOCAL TAPAS</h1>
+            <ul>
+
+            </ul>
+            <form class="form">
+                <input type="text" name="new" class="newItem" placeholder="New item" required>
+                <input type="submit" value="+ Add Item" class="addBtn">
+            </form>
+            <div class="controls">
+                <input type="button" value="Select All" class="control">
+                <input type="button" value="Clear All" class="control">
+                <input type="button" value="Delete All" class="control">
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    let data = [];
+    const ulEl = document.querySelector('ul');
+
+    const form = document.querySelector('form');
+    function submitHandler(e) {
+        e.preventDefault();
+
+        data.push(new DataObj(false, this.querySelector('.newItem').value));
+        populateList(data, ulEl);
+
+        this.reset();
+
+        saveData(data);
+    }
+
+    function saveData(data) {
+        localStorage.setItem('tapasData', JSON.stringify(data));
+    }
+    form.addEventListener('submit', submitHandler);
+
+    function populateList(data = [], el) {
+        el.innerHTML = data.map((d, i) => {
+            return `
+            <li>
+                <input type="checkbox" data-i=${i} id="item${i}" ${d.status ? 'checked' : ''}>
+                <label for="item${i}">${d.name}</label>
+            </li>
+        `;
+        }).join('');
+    }
+    function toggleStatus(i) {
+        data[i].status = !data[i].status;
+        saveData(data);
+    }
+    ulEl.addEventListener('click', (e) => {
+        console.log(e);
+        if (e.target.matches('input'))
+            toggleStatus(e.target.dataset.i);
+    })
+
+    if (localStorage.getItem('tapasData')) {
+        data = JSON.parse(localStorage.getItem('tapasData'));
+        populateList(data, ulEl);
+    }
+
+    const controls = document.querySelectorAll('.control');
+    controls.forEach(c=>[
+        c.addEventListener('click',(e)=>{
+            if(e.target.value.includes('Select')){
+                data.forEach(d=>{
+                    d.status = true;
+                });
+            }else if(e.target.value.includes('Delete')){
+                data=[];
+            }else{
+                data.forEach(d=>{
+                    d.status = false;
+                });
+            }
+            populateList(data, ulEl);
+            saveData(data);
+        })
+    ])
+
+    class DataObj {
+        status = false;
+        name = '';
+        constructor(s, n) {
+            this.status = s;
+            this.name = n;
+        }
+    }
+</script>
+
+</html>
