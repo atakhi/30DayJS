@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GeoLocation & Compass</title>
+</head>
+<script>
+
+</script>
+<body>
+    
+</body>
+<script>
+    function success(e){
+        console.log("lat: " + e.coords.latitude + " long: " + e.coords.longitude + " speed: " + e.coords.speed + " direction: " + e.coords.heading);
+    }
+    function error(e){
+        console.error(e);
+    }
+navigator.geolocation.getCurrentPosition(success,error);
+//watchPosition async
+</script>
+</html>
