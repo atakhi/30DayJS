@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event capture, bubble</title>
+</head>
+<style>
+    html {
+    box-sizing: border-box;
+  }
+  
+  *, *:before, *:after { 
+    box-sizing: inherit; 
+  }
+    div {
+      width: 100%;
+      padding: 100px;
+    }
+  
+    .one {
+      background: thistle;
+    }
+  
+    .two {
+      background: mistyrose;
+    }
+  
+    .three {
+      background: coral;
+    }</style>
+<body>
+    <div class="one">
+        <div class="two">
+            <div class="three">
+
+            </div>
+            
+        </div>
+        
+    </div>
+    <input type="button" value="Click">
+</body>
+<script>
+    const btn = document.querySelector('input[type=button]');
+    const divs = document.querySelectorAll('div');
+    divs.forEach(d=>{
+        d.addEventListener('click',clickHandler,{capture:false,once:false}); // once to unbind itself after fired
+    })
+    function clickHandler(e){
+        console.log(this.classList.value);
+        e.stopPropagation(); // stop bubbling or capturing at current target
+        //capture html - body - div
+        // bubble div - body - html default is bubble
+        //when mmutiple listeners are registered
+    }
+    btn.addEventListener('click',clickHandler);
+</script>
+</html>l
